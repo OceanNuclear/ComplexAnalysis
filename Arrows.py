@@ -4,14 +4,14 @@ from matplotlib import pyplot as plt
 import seaborn as sns
 #uses arrows to plot where each point lands after being transformed by the function
 LongComputationalTime = False
-def complexFunc(point):
+def complexFunc(point): #if LongComputationalTime == True
 	[x,y] = point
 	z = x+1j*y
-	function = 3*(z-1)/(z+3)
+	function = 12/((z-1)*(z+2)*(z+3))
 	return [np.real(function),np.imag(function)]
-def complexInput(z):
+def complexInput(z): #if LongComputationalTime == False
 	#RC=0.0000001
-	function = 2*(z+10)/((z-5)*(z-2))
+	function = 1/((z+3)*(z+1)*(z+1))
 	return function
 
 def mymeshgrid(x,y):
@@ -22,7 +22,7 @@ def mymeshgrid(x,y):
 	return np.array(coord).reshape([len(x)*len(y),2])
 
 def rotateColorSpace(theta):
-	#given a vector pointing at 1,0,0; we want to rotate it around the [1,1,1] axis by theta degrees.
+	#given a vector pointing at 1,0,0; we want to rotate it around the (1/sqrt(3))*[1,1,1] axis by theta degrees.
 	w = cos(theta/2)
 	x = sin(theta/2)/sqrt(3)
 	y = sin(theta/2)/sqrt(3)
