@@ -1,0 +1,150 @@
+%`
+%\nonstopmode
+\hbadness=100000
+\documentclass[a4paper, 12pt]{article}
+\usepackage{amsmath,amsfonts,caption,float,geometry,graphicx,mathtools,pythonhighlight,textcomp,url,verbatim,subcaption,tabularx, longtable, ulem, hyperref, tikz} %,parskip
+\geometry{ a4paper, total={170mm,257mm}, left=20mm, top=20mm}
+\newcommand{\matr}[1]{\underline{\underline{\textbf{#1}}}}
+\newcommand{\ve}[1]{\boldsymbol{#1}}
+\newcommand{\pythoncode}[2]{
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\begin{adjustwidth}{-1.3cm}{-1.3cm}
+\texttt{#1}
+\inputpython{#2}{1}{1500}
+\end{adjustwidth}
+}
+\usepackage[toc, page]{appendix}
+% \usepackage[dvipsnames]{xcolor}
+% \definecolor{subr}{rgb}{0.8, 0.33, 0.0}
+% \definecolor{func}{rgb}{0.76, 0.6, 0.42}
+
+\begin{document}
+\centering
+% \includegraphics[width=8cm]{CoverPage/UoBlogo.pdf}
+% \hrule
+% \bigbreak
+% \textbf{F}usion Neutron \textbf{Acti}vation Spectra \textbf{U}nfolding by \textbf{N}eural \textbf{N}etworks \\
+% (FACTIUNN)                                      \\
+% \hrule
+% \bigbreak
+% \begin{minipage}[b]{0.4\textwidth}
+%     \includegraphics[height=2cm]{CoverPage/CCFElogo.jpeg}
+%   \end{minipage}
+%   \hfill
+%   \begin{minipage}[b]{0.4\textwidth}
+%     \includegraphics[height=3cm]{CoverPage/UKAEAlogo.jpeg}
+% \end{minipage}
+    
+\begin{table}[!h]
+\centering
+\begin{tabular}{rl}
+author:&Ocean Wong          \\
+       &(Hoi Yeung Wong)    \\
+date:  &May 2020       \\
+Organization:&Culham Centre for Fusion Energy\\
+            & Sheffield Hallam University\\
+Reivewed by:&Bashir Mitchell\\
+Motivated by:&Boredom of quarantine
+\end{tabular}
+\end{table}
+\hrule
+\abstract
+This document explores the intuition for exponentiation of complex numbers
+
+% \hline
+% \twocolumn
+\begin{center}
+\chapter{}
+\end{center}
+\section{Introduction}
+To most physics students and graduates, two of the three basic arithmetic operations of complex numbers $z \in \mathbb{C}$ has been made intuitive:
+\begin{longtable}{ccc}
+\hline
+operation& representation & intuition\\
+\hline
+addition & $z_1+z_2$ & translation of the $z_1$ plane by the vector $z_2$\\
+multiplication & $(z_1)(z_2)$ & dilation of the complex plane by a factor $|z_2|$\\ && and rotation by a factor $arg(|z_2|)$. \\
+\hline
+\end{longtable}
+
+However, the third commonly used arithmetic operation, exponentiation ${z_1}^{z_2}$, is not made obvious/intuitive as part of their physics training.
+
+
+\section{Set up and calculation}
+In the previous two operations we have visualized $z_1$ as a member on the infinitely extending complex plane, while $z_2$ describes an operation on this plane\footnote{This asymmetric nature of $z_1$ and $z_2$ makes the communtativity of complex multiplication unintuitive. But that's a story for another time}. We will use the same approach in the following set up:
+
+Let $z_1= e^{x} e^{iy}$. And for convenience, let's denote the $z_2 = a+ib$.
+
+Then an operation $z_1^{z_2}$ will give 
+    
+\begin{align}
+z_3 = z_1^{z_2}  & = e^{ax} e^{iay} \cdot e^{ibx} e^{-by}\\
+                & = e^{ax - by} e^{iay + bx} \\
+                & = e^{(ax-by) +i (ay+bx)} \label{initial algebra}
+\end{align}
+
+\section{Trick}
+The trick here is then to recognize the matrix-algebra nature of equation \ref{initial algebra}.
+
+It the real part of the exponent looks like the dot product $ (a, -b) \cdot (x, y)$, while
+the imaginary part of the exponent looks like the dot product $(b, a) \cdot (x, y)$.
+
+Thus we can re-write the the real and imaginary part of the resulting $z_3$ into a 2D-vector, given by the transformation
+\begin{equation}
+\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}
+\begin{pmatrix}
+x\\
+y
+\end{pmatrix}\label{transformation equation}
+\end{equation}
+
+\section{Intuition}
+Therefore the intuition of raising $z_1$ to the power of $z_2$ can be broken down into four steps
+\begin{enumerate}
+    \item decompose $z_1$ into $x=ln(|z|), y=arg(z)$. This will turn the polar coordinates lines on the argand diagram \ref{polar} into a cartesian coordinate with $-\infty < x < \infty$,$ -\pi\le y\le \pi$ (figure \ref{cartesian}). The point ($-\infty$, whatever) in figure \ref{cartesian} corresponds to the origin in figure \ref{polar}.
+    \item contruct a matrix 
+    $\begin{pmatrix}
+    a & -b\\
+    b & a
+    \end{pmatrix}$ by decomposing $z_2$ into $z_2=a+ib$.
+    \item apply the matrix transformation (equation \ref{transformation equation})
+    \item now exponentiate (inverse transformation of what we've done in step 1).
+\end{enumerate}
+
+\begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{polar.png}
+    \captionof{figure}{Argand diagram with polar coordinate lines overlaid. Exponentiating figure \ref{cartesian} will give this diagram.
+    The origin in figure \ref{cartesian} corresponds to the point $(1,0)$ in figure \ref{polar}.
+    }\label{polar}
+\end{minipage}
+  \hfill
+\begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{cartesian.png}
+    \captionof{figure}{Cartesian coordinates of the exponent of a complex number $z$. This can be obtained by taking the logarithm of figure \ref{polar} to give $x=ln(|z|), y=arg(z)$.}\label{cartesian}
+\end{minipage}
+
+\section{Correspondence to our expectation in special cases}
+When $a=n, b=0$, 
+$\begin{pmatrix}
+a & -b\\
+b & a
+\end{pmatrix}$ becomes a simple scaling matrix with no skewing component, agreeing with our expectation that ${z_1}^{n}$ simply multiplies itself by n times.
+
+If both the real and imaginary parts are zero, then the transformation in step 3 will squash everything down to the origin; and step four will transform the origin back to the number $1+0i$, confirming our expectation that $z_1^0 = 1$.
+
+\section{Interesting results}
+When $z_2$ is purely imaginary, the unit circle of $z_1$ (whose exponent has real part=0) will be mapped to the real number line in the output $z_3$. This is because when $a=0$, the matrix transformation becomes a 90-degrees rotation plus a scaling operation, swapping the real and the imaginary part of the exponent.
+\section{Multiple results}
+Of course, the point $(x,y)$ and the point $(x, y + 2n\pi)$ on figure \ref{cartesian} both maps to the same point on figure \ref{polar}. But these two points may be transformed differently by step 3. Therefore one get multiple results of $z_3$ depending on which represenation of $z_1$ s/he has chosen for themselves on figure \ref{cartesian} to represent $z_2$.
+% \begin{figure}[H]
+% \centering
+% \includegraphics[width=1\textwidth]{path/to/file.png} %Stupid latex doesn't allow two dots in the filename.
+% \caption{Short description} \label{somethingcatchy}
+% \end{figure}
+
+\end{document}
+%`
