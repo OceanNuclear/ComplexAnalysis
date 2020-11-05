@@ -7,11 +7,12 @@ LongComputationalTime = False
 def complexFunc(point): #if LongComputationalTime == True
 	[x,y] = point
 	z = x+1j*y
-	function = 12/((z-1)*(z+2)*(z+3))
+	function = (z**2+4)/((z-3)*(z+1)*(z+6)*(z))
 	return [np.real(function),np.imag(function)]
 def complexInput(z): #if LongComputationalTime == False
 	#RC=0.0000001
-	function = 1/((z+3)*(z+1)*(z+1))
+	function = -(z+1)/((z-2)*(z+3))
+	#(z**2+4)/((z-3)*(z+1)*(z+6)*(z))
 	return function
 
 def mymeshgrid(x,y):
@@ -47,6 +48,7 @@ landingPts = np.array([z if np.isfinite(z).all() else [0,0] for z in uncleanLand
 sortedLandingPoints = np.reshape(landingPts,[len(x),len(y),2])
 
 colorcycle = iter([rotateColorSpace(theta) for theta in np.linspace(0,tau, cycleLen)])
+#Order=FABCDEF
 if LongComputationalTime:
 	for n in range(len(startingPts)):
 		plt.annotate("", xy=startingPts[n], xytext=landingPts[n],arrowprops=dict(color = next(colorcycle), arrowstyle= '<-', alpha=0.5,),)#use arrowheads

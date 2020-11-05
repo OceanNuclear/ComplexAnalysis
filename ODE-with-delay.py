@@ -1,23 +1,35 @@
-#!/home/ocean/anaconda3/bin/python3
 from numpy import cos, arccos, sin, arctan, tan, pi, sqrt; from numpy import array as ary; import numpy as np; tau = 2*pi
 from matplotlib import pyplot as plt
 #An attempt to investigate what happens when your ODE is y'(t)=y(t-Δt)
-numInt=2#Number of times to integrate the function to; reason for its name will be apparent after plotting beings
+#i.e. a DDE (delayed differential equation)
 
-arysize=10000
-delay = 100
+total_time = 100 # total number of seconds to simulate
+resolution = 100 # number of points to simulate per second
+delay = 0.1 # how far back is Δt
 
-def MathematicalFunctionOfChoice(dtsize):#dtsize refers to how many elements of y to populate/calculate
-	return np.cos(np.arange(dtsize))
+def Seed_func(t):
+    """
+    The initial values of y, i.e. the boudnary condition.
+    'dtsize' refers to how many elements of y to populate/calculate. 
+    """
+    return np.cos(t)
 
-y=np.zeros(arysize)#create empty array
-y[:delay]=MathematicalFunctionOfChoice(delay)#seed the first few elements
-for t in range(arysize-delay):
-	time=t+delay
-	y[time]=y[t]+y[time-1]
+def dy_dx(y):
+    """
+    The function that translate y (a while ago) into dy/dx.
+    """
+    return y # using a identity formulat (x=y) here.
+
+x = np.arange(0, total_time, 1/resolution)
+seed = Seed_func(x[:int(delay*resolution)]) #seed the first few elements
+
+y = list(seed).copy()
+for t_ind in range(len(seed), len(x)):
+    y.append( y[t_ind - int(delay*resolution)] + dy_dx(y[t_ind - int(delay*resolution)])*delay )
 
 plt.ylabel("y(t)")
 plt.xlabel("time")
-plt.plot(y[:(numInt+1)*delay])
+
+plt.plot(x, y)
 plt.show()
 #Turns out, solving the ODE for numInt*delay elements is equivalent to integrating the seed values by numInt cycles.
