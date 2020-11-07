@@ -20,7 +20,6 @@
 % \definecolor{func}{rgb}{0.76, 0.6, 0.42}
 
 \begin{document}
-\centering
 % \includegraphics[width=8cm]{CoverPage/UoBlogo.pdf}
 % \hrule
 % \bigbreak
@@ -49,9 +48,9 @@ Motivated by:&Boredom of quarantine
 \end{tabular}
 \end{table}
 \hrule
-\abstract
+\begin{abstract}
 This document explores the intuition for exponentiation of complex numbers
-
+\end{abstract}
 % \hline
 % \twocolumn
 \begin{center}
@@ -70,6 +69,7 @@ multiplication & $(z_1)(z_2)$ & dilation of the complex plane by a factor $|z_2|
 
 However, the third commonly used arithmetic operation, exponentiation ${z_1}^{z_2}$, is not made obvious/intuitive as part of their physics training.
 
+This text aims to provide intuition for that.
 
 \section{Set up and calculation}
 In the previous two operations we have visualized $z_1$ as a member on the infinitely extending complex plane, while $z_2$ describes an operation on this plane\footnote{This asymmetric nature of $z_1$ and $z_2$ makes the communtativity of complex multiplication unintuitive. But that's a story for another time}. We will use the same approach in the following set up:
@@ -102,30 +102,32 @@ y
 \end{pmatrix}\label{transformation equation}
 \end{equation}
 
-\section{Intuition}
+\section{Intuition}\label{Intuition}
 Therefore the intuition of raising $z_1$ to the power of $z_2$ can be broken down into four steps
 \begin{enumerate}
-    \item decompose $z_1$ into $x=ln(|z|), y=arg(z)$. This will turn the polar coordinates lines on the argand diagram \ref{polar} into a cartesian coordinate with $-\infty < x < \infty$,$ -\pi\le y\le \pi$ (figure \ref{cartesian}). The point ($-\infty$, whatever) in figure \ref{cartesian} corresponds to the origin in figure \ref{polar}.
-    \item contruct a matrix 
-    $\begin{pmatrix}
+    \item Decompose $z_1$ into $x=ln(|z|), y=arg(z)$. This will turn the polar coordinates lines on the argand diagram \ref{polar} into a cartesian coordinate with $-\infty < x < \infty$,$ -\pi\le y\le \pi$ (figure \ref{cartesian}). The point ($-\infty$, $-\pi < y\ge\pi$) in figure \ref{cartesian} corresponds to the origin in figure \ref{polar}.
+    \item Contruct a matrix:
+    $\matr{M}=\begin{pmatrix}
     a & -b\\
     b & a
     \end{pmatrix}$ by decomposing $z_2$ into $z_2=a+ib$.
-    \item apply the matrix transformation (equation \ref{transformation equation})
-    \item now exponentiate (inverse transformation of what we've done in step 1).
+    \item Apply this matrix transformation $\matr{M}$ (equation \ref{transformation equation}) on figure \ref{cartesian}.
+    \item Now exponentiate the transformed figure \ref{cartesian} (inverse transformation of what we've done in step 1).
 \end{enumerate}
 
-\begin{minipage}[b]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{polar.png}
-    \captionof{figure}{Argand diagram with polar coordinate lines overlaid. Exponentiating figure \ref{cartesian} will give this diagram.
-    The origin in figure \ref{cartesian} corresponds to the point $(1,0)$ in figure \ref{polar}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{polar.png}
+    \captionof{figure}{Input complex plane with polar coordinate lines overlaid. Exponentiating figure \ref{cartesian} will return this figure.
+    The origin in figure \ref{cartesian} corresponds to the point $(1,0)$ in this figure.
     }\label{polar}
-\end{minipage}
-  \hfill
-\begin{minipage}[b]{0.4\textwidth}
-    \includegraphics[width=\textwidth]{cartesian.png}
-    \captionof{figure}{Cartesian coordinates of the exponent of a complex number $z$. This can be obtained by taking the logarithm of figure \ref{polar} to give $x=ln(|z|), y=arg(z)$.}\label{cartesian}
-\end{minipage}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{cartesian.png}
+    \captionof{figure}{The output complex plane with cartesian coordinates overlaid. Each point on the cartesian coordinate lines corresponds to a point on the polar coordinate lines in figure \ref{polar}. This can be obtained by taking the logarithm of figure \ref{polar} to give $x=ln(|z|), y=arg(z)$.}\label{cartesian}
+\end{figure}
+The lines in the figures have corresponding colours: the deep purple line gets mapped to the deep purple line after transformation, etc.
 
 \section{Correspondence to our expectation in special cases}
 When $a=n, b=0$, 
@@ -136,10 +138,34 @@ b & a
 
 If both the real and imaginary parts are zero, then the transformation in step 3 will squash everything down to the origin; and step four will transform the origin back to the number $1+0i$, confirming our expectation that $z_1^0 = 1$.
 
+\section{Example: $i^i$}
+For the case of raising any complex number $z_1$ to the power of $i$,
+\begin{align}
+    z_2 &= 0 + 1i
+\end{align}
+Therefore, using the checklist laid out in section \ref{Intuition}:
+
+\begin{enumerate}
+    \item Step 1 is as described in section \ref{Intuition}. At this point $z_1 = i = (0,1)$ will be transformed to $ln(z_1) = 0+arg(i) i = (0, arg(i)) = (0, \frac{\pi}{2})$
+    \item Step 2 will give us a rotation matrix 
+$\matr{M} = \begin{pmatrix}
+0 & -1\\
+1 & 0
+\end{pmatrix}$ which is a rotation matrix that rotates everything anti-clockwise by $90 ^\circ$.
+    \item Applying this on $z_1$ will give us a rotated figure \ref{cartesian}, rotated to the left by $90^\circ$. If we consider only the point $z_1 = i$, it will now be mapped from $(0, \frac{\pi}{2})$ (step 1) to the point $(-\frac{\pi}{2}, 0)$
+    \item Exponentiating this result will give us the solution $z_3$. In this case we will exponentiate $-\frac{\pi}{2} + 0i$ into $e^{-\frac{\pi}{2}} \approx 0.20788$
+\end{enumerate}
+
 \section{Interesting results}
-When $z_2$ is purely imaginary, the unit circle of $z_1$ (whose exponent has real part=0) will be mapped to the real number line in the output $z_3$. This is because when $a=0$, the matrix transformation becomes a 90-degrees rotation plus a scaling operation, swapping the real and the imaginary part of the exponent.
-\section{Multiple results}
-Of course, the point $(x,y)$ and the point $(x, y + 2n\pi)$ on figure \ref{cartesian} both maps to the same point on figure \ref{polar}. But these two points may be transformed differently by step 3. Therefore one get multiple results of $z_3$ depending on which represenation of $z_1$ s/he has chosen for themselves on figure \ref{cartesian} to represent $z_2$.
+In fact when $z_2$ is purely imaginary, the unit circle of $z_1$ (whose exponent has real part=0) will be mapped to the real number line in the output $z_3$. This is because when $a=0$, the matrix transformation becomes a 90-degrees rotation plus a scaling operation, swapping the real and the imaginary part of the exponent.
+\section{Multiple solutions}
+Of course, the point $(x,y)$ and the point $(x, y + 2n\pi)$ on figure \ref{cartesian} both maps to the same point on figure \ref{polar}. But these two points may be transformed differently by step 3. Therefore one get multiple answers of $z_3$ depending on which represenation of $z_1$ s/he has chosen for themselves on figure \ref{cartesian} to represent $z_2$.
+
+An example of this is that $i^i$ actually has mutliple solutions, 
+\begin{align}
+    i^i = e^{-\frac{\pi}{2}} e^{2n\pi} = 0.20788 (e^{2n\pi})
+    & & \forall n \in \mathbb{Z}
+\end{align}
 % \begin{figure}[H]
 % \centering
 % \includegraphics[width=1\textwidth]{path/to/file.png} %Stupid latex doesn't allow two dots in the filename.
